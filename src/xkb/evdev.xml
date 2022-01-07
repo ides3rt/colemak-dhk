@@ -1345,12 +1345,6 @@
       <variantList>
         <variant>
           <configItem>
-            <name>colemak_dhk</name>
-            <description>English (Colemak-DHk)</description>
-          </configItem>
-        </variant>
-        <variant>
-          <configItem>
             <name>chr</name>
             <!-- Keyboard indicator for Cherokee layouts -->
             <shortDescription>chr</shortDescription>
@@ -1404,6 +1398,12 @@
           <configItem>
             <name>colemak_dh_iso</name>
             <description>English (Colemak-DH ISO)</description>
+          </configItem>
+        </variant>
+        <variant>
+          <configItem>
+            <name>colemak_dhk</name>
+            <description>English (Colemak-DHk)</description>
           </configItem>
         </variant>
         <variant>
