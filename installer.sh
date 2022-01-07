@@ -11,12 +11,43 @@ Err() {
 
 (( $# > 0 )) && Err 1 "don't accept argument..."
 
+Basedir="${0%/*}"/src
+
+if [[ ! -d "$Basedir/src" ]]; then
+	Err 0 "Unable to find '$Basedir/src', use \`git clone\`..."
+	if ! type -P git &>/dev/null; then
+		read -p 'git(1) not found, do you want to install it? [Y/n]: '
+		case "$REPLY" in
+
+			[Yy][Ee][Ss]|[Yy]|'')
+				if type -P pacman &>/dev/null; then
+					pacman -Syy git || Err 1 'Unable to install git(1)...'
+				elif type -P apt-get &>/dev/null; then
+					apt-get update
+					apt-get install git || Err 1 'Unable to install git(1)...'
+				else
+					Err 1 "Your packages manager not supported by '$Program'..."
+				fi ;;
+
+			[Nn][Oo]|[Nn])
+				exit 1 ;;
+
+			*)
+				Err 1 'Invaild reply...'
+		esac
+	fi
+
+	URL='https://github.com/ides3rt/colemak-dhk'
+	git clone "$URL" || Err 1 'Failed to use `git clone`...'
+
+	Basedir="${URL##*/}"/src
+fi
 
 if ((UID)); then
 
 	Err 0 "For console and xkb installation run $Program(1) as root..."
 
-	File="${0%/*}"/src/colemak-dhk.xmodmap
+	File="$Basedir"/colemak-dhk.xmodmap
 	Dest="$HOME"/.Xmodmap
 
 	if [[ -f $Dest ]]; then
@@ -34,10 +65,10 @@ else
 
 	type -P gzip &>/dev/null || Err 1 'gzip(1) is required for console installation...'
 
-	Xkbdir="${0%/*}"/src/xkb
+	Xkbdir="$Basedir"/xkb
 	Xkbdest=/usr/share/X11/xkb
 
-	Console="${0%/*}"/src/colemak-dhk.map
+	Console="$Basedir"/colemak-dhk.map
 	Consdest=/usr/share/kbd/keymaps/i386/colemak-dhk
 
 	for Dest in "$Xkbdest"/{rules/evdev.xml,symbols/us} \
@@ -62,7 +93,7 @@ else
 		(( ErrCount++ ))
 	fi
 
-	if ! { mkdir "$Consdest" && \
+	if ! { mkdir -p "$Consdest" && \
 			gzip -k "$Console" && \
 			mv "$Console".gz "$Consdest"
 		}
