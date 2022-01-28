@@ -13,27 +13,34 @@ Err() {
 
 Basedir="${0%/*}"/src
 
-if [[ ! -d "$Basedir/src" ]]; then
+if [[ ! -d $Basedir/src ]]; then
 	Err 0 "Unable to find '$Basedir/src', use \`git clone\`..."
-	if ! type -P git &>/dev/null; then
+
+	if ! type -P git &>/dev/null; then-
 		read -p 'git(1) not found, do you want to install it? [Y/n]: '
+
 		case "$REPLY" in
 
 			[Yy][Ee][Ss]|[Yy]|'')
+
 				if type -P pacman &>/dev/null; then
-					pacman -Syy git || Err 1 'Unable to install git(1)...'
+					pacman -Sy git || Err 1 'Unable to install git(1)...'
+
 				elif type -P apt-get &>/dev/null; then
 					apt-get update
 					apt-get install git || Err 1 'Unable to install git(1)...'
+
 				else
 					Err 1 "Your packages manager not supported by '$Program'..."
+
 				fi ;;
 
 			[Nn][Oo]|[Nn])
 				exit 1 ;;
 
 			*)
-				Err 1 'Invaild reply...'
+				Err 1 'Invaild reply...' ;;
+
 		esac
 	fi
 
@@ -71,16 +78,8 @@ else
 	Console="$Basedir"/colemak-dhk.map
 	Consdest=/usr/share/kbd/keymaps/i386/colemak-dhk
 
-	for Dest in "$Xkbdest"/{rules/evdev.xml,symbols/us} \
-		"$Consdest"/"${Console##*/}"
-	{
-		[[ -d $Dest ]] && Err 1 "'$Dest' is a directory. aborted..."
-		[[ -f $Dest ]] || Err 0  "'$Dest' detected. creating a backup for '$Dest'..."
-		mv "$Dest" "$Dest".bak || Err 1 "Failed to create backup for '$Dest'. aborted..."
-	}
-
 	for File in "$Xkbdir"/{us,evdev.xml} "$Console"; {
-		[[ -f "$File" ]] || Err 1  "'$File' is missing. aborted..."
+		[[ -f "$File" ]] || Err 1  "'$File' is missing, aborted..."
 	}
 
 	if ! cp "$Xkbdir"/us "$Xkbdest"/symbols/us; then
@@ -93,15 +92,14 @@ else
 		(( ErrCount++ ))
 	fi
 
-	if ! { mkdir -p "$Consdest" && \
+	if	! {	mkdir -p "$Consdest" && \
 			gzip -k "$Console" && \
-			mv "$Console".gz "$Consdest"
-		}
+			mv "$Console".gz "$Consdest" ;}
 	then
 		Err 0 "Installation of '${Console##*/}' failed..."
 		(( ErrCount++ ))
 	fi
 
-	Err 0 "Installation is done with ${ErrCount:-0} error(s)..."
+	Err 0 "Installation was finished with ${ErrCount:-0} error(s)..."
 
 fi
