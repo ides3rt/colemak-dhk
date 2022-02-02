@@ -939,22 +939,25 @@ xkb_symbols "colemak_dh_iso" {
     include "level3(ralt_switch)"
 };
 
-xkb_symbols "colemak_dhk" {
+// Xkb for the Pro(gram)mer Cole(mak) layout (US, ANSI keyboard, Z angel mod, Wide layout).
+// 2022-02-02 iDes3rt
 
-    name[Group1]= "English (Colemak-DHk)";
+xkb_symbols "grammak" {
+
+    name[Group1]= "English (Grammak)";
 
     key <TLDE> { [        grave,   asciitilde,      dead_tilde,       asciitilde ] };
-    key <AE01> { [            1,       exclam,      exclamdown,      onesuperior ] };
-    key <AE02> { [            2,           at,       masculine,      twosuperior ] };
-    key <AE03> { [            3,   numbersign,     ordfeminine,    threesuperior ] };
-    key <AE04> { [            4,       dollar,            cent,         sterling ] };
+    key <AE01> { [            8,       exclam,      exclamdown,      onesuperior ] };
+    key <AE02> { [            7,           at,       masculine,      twosuperior ] };
+    key <AE03> { [            1,   numbersign,     ordfeminine,    threesuperior ] };
+    key <AE04> { [            3,       dollar,            cent,         sterling ] };
     key <AE05> { [            5,      percent,        EuroSign,              yen ] };
     key <AE06> { [            6,  asciicircum,         hstroke,          Hstroke ] };
     key <AE07> { [        equal,         plus,        multiply,         division ] };
-    key <AE08> { [            7,    ampersand,             eth,              ETH ] };
-    key <AE09> { [            8,     asterisk,           thorn,            THORN ] };
-    key <AE10> { [            9,    parenleft,  leftsinglequotemark,  leftdoublequotemark ] };
-    key <AE11> { [            0,   parenright, rightsinglequotemark,  rightdoublequotemark ] };
+    key <AE08> { [            4,    ampersand,             eth,              ETH ] };
+    key <AE09> { [            2,     asterisk,           thorn,            THORN ] };
+    key <AE10> { [            0,    parenleft,  leftsinglequotemark,  leftdoublequotemark ] };
+    key <AE11> { [            8,   parenright, rightsinglequotemark,  rightdoublequotemark ] };
     key <AE12> { [        minus,   underscore,          endash,           emdash ] };
 
     key <AD01> { [            q,            Q,      adiaeresis,       Adiaeresis ] };
@@ -995,9 +998,27 @@ xkb_symbols "colemak_dhk" {
     key <AB09> { [        comma,         less,    dead_cedilla,       asciitilde ] };
     key <AB10> { [       period,      greater,   dead_abovedot,       asciitilde ] };
 
-    key <CAPS> { [    BackSpace,    BackSpace,       BackSpace,        BackSpace ] };
+    key <CAPS> { [       Escape,       Escape,          Escape,           Escape ] };
     key <LSGT> { [        minus,   underscore,          endash,           emdash ] };
     key <SPCE> { [        space,        space,           space,     nobreakspace ] };
+
+    include "level3(ralt_switch)"
+};
+
+// Xkb for the Pro(gram)mer Cole(mak) layout (US, ISO keyboard, Z angel mod, Wide layout).
+// 2022-02-02 iDes3rt
+
+xkb_symbols "grammak_iso" {
+
+    include "us(grammak)"
+    name[Group1]= "English (Grammak ISO)";
+
+    key <AE07> { [    backslash,         bar,  asciitilde,  asciitilde ] };
+    key <AE12> { [        equal,        plus,    multiply,    division ] };
+
+    key <AD11> { [   apostrophe,    quotedbl,      otilde,      Otilde ] };
+    key <AD12> { [        minus,  underscore,      endash,      emdash ] };
+    key <BKSL> { [    semicolon,       colon,  odiaeresis,  Odiaeresis ] };
 
     include "level3(ralt_switch)"
 };

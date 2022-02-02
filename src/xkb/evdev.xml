@@ -1402,8 +1402,14 @@
         </variant>
         <variant>
           <configItem>
-            <name>colemak_dhk</name>
-            <description>English (Colemak-DHk)</description>
+            <name>grammak</name>
+            <description>English (Grammak)</description>
+          </configItem>
+        </variant>
+        <variant>
+          <configItem>
+            <name>grammak_iso</name>
+            <description>English (Grammak ISO)</description>
           </configItem>
         </variant>
         <variant>
