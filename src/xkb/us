@@ -947,7 +947,7 @@ xkb_symbols "grammak" {
     name[Group1]= "English (Grammak)";
 
     key <TLDE> { [        grave,   asciitilde,      dead_tilde,       asciitilde ] };
-    key <AE01> { [            8,       exclam,      exclamdown,      onesuperior ] };
+    key <AE01> { [            9,       exclam,      exclamdown,      onesuperior ] };
     key <AE02> { [            7,           at,       masculine,      twosuperior ] };
     key <AE03> { [            1,   numbersign,     ordfeminine,    threesuperior ] };
     key <AE04> { [            3,       dollar,            cent,         sterling ] };
