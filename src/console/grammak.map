@@ -1,5 +1,5 @@
-# Console keymap for the Grammak layout.
-# US, ANSI keyboard, Z angle mod, Wide layout.
+# Console keymap for the Grammak layout (US, ANSI keyboard, Z angle mod, Wide layout).
+# 2022-02-03 by iDes3rt
 
 alt_is_meta
 charset "iso-8859-15"
@@ -62,7 +62,7 @@ keycode  53  =  period        greater      asciitilde       asciitilde
 
 keycode  57  =  space
 
-# Remove this line if you want caps lock unmodified
+# Remove this line, if you want CapsLock unmodified
 keycode  58  =  Escape
 
 keycode   1  =  Escape
@@ -70,8 +70,10 @@ keycode  14  =  Delete
 keycode  15  =  Tab
 keycode  28  =  Return
 alt  keycode  28  =  Meta_Control_m
-keycode  29  =  Control
-keycode  42  =  Shift
-keycode  54  =  Shift
-keycode  56  =  Alt
-keycode  97  =  Control
+
+# Remove the 'S', if you don't want Sticky Keys
+keycode  29  =  SControl
+keycode  42  =  SShift
+keycode  56  =  SAlt
+keycode  54  =  SShift
+keycode  97  =  SControl

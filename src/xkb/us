@@ -939,8 +939,8 @@ xkb_symbols "colemak_dh_iso" {
     include "level3(ralt_switch)"
 };
 
-// Xkb for the Pro(gram)mer Cole(mak) layout (US, ANSI keyboard, Z angel mod, Wide layout).
-// 2022-02-02 iDes3rt
+// Xkb for the Grammak layout (US, ANSI keyboard, Z angel mod, Wide layout).
+// 2022-02-03 by iDes3rt
 
 xkb_symbols "grammak" {
 
@@ -1005,8 +1005,8 @@ xkb_symbols "grammak" {
     include "level3(ralt_switch)"
 };
 
-// Xkb for the Pro(gram)mer Cole(mak) layout (US, ISO keyboard, Z angel mod, Wide layout).
-// 2022-02-02 iDes3rt
+// Xkb for the Grammak layout (US, ISO keyboard, Z angel mod, Wide layout).
+// 2022-02-03 by iDes3rt
 
 xkb_symbols "grammak_iso" {
 
