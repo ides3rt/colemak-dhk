@@ -8,8 +8,6 @@ include "qwerty-layout"
 include "linux-with-alt-and-altgr"
 strings as usual
 
-keycode   1  =  Escape
-
 keycode  41  =  grave         asciitilde   dead_tilde       asciitilde     nul
 keycode  2   =  nine          exclam       exclamdown       onesuperior
 keycode  3   =  seven         at           masculine        twosuperior    nul
@@ -50,7 +48,7 @@ keycode  38  =  e             E            eacute           Eacute         Contr
 keycode  39  =  i             I            iacute           Iacute         Control_i
 keycode  40  =  o             O            oacute           Oacute         Control_o
 
-keycode  86  =  minus         underscore   asciitilde       asciitilde     Control_underscore
+keycode  86  =  z             Z            ae               AE             Control_z
 keycode  44  =  x             X            dead_circumflex  asciitilde     Control_x
 keycode  45  =  c             C            ccedilla         Ccedilla       Control_c
 keycode  46  =  d             D            dead_diaeresis   asciitilde     Control_d
@@ -62,10 +60,13 @@ keycode  51  =  h             H            asciitilde       asciitilde     Contr
 keycode  52  =  comma         less         dead_cedilla     asciitilde
 keycode  53  =  period        greater      asciitilde       asciitilde
 
-keycode  57  =  space         space        space            nobreakspace   nul
+keycode  57  =  space
 
-keycode  58  =  Escape        Escape       Escape           Escape
+# Remove this line if you want caps lock unmodified
+keycode  58  =  Escape
 
+keycode   1  =  Escape
+keycode  14  =  Delete
 keycode  15  =  Tab
 keycode  28  =  Return
 alt  keycode  28  =  Meta_Control_m
