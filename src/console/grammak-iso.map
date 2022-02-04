@@ -1,5 +1,5 @@
 # Console keymap for the Grammak layout (US, ISO keyboard, Z angle mod, Wide layout).
-# 2022-02-03 by iDes3rt
+# 2022-02-04 by iDes3rt
 
 alt_is_meta
 charset "iso-8859-15"
@@ -70,10 +70,11 @@ keycode  14  =  Delete
 keycode  15  =  Tab
 keycode  28  =  Return
 alt  keycode  28  =  Meta_Control_m
+keycode  29  =  Control
+keycode  56  =  Alt
+keycode  97  =  Control
 
 # Remove the 'S', if you don't want Sticky Keys
-keycode  29  =  SControl
 keycode  42  =  SShift
-keycode  56  =  SAlt
 keycode  54  =  SShift
-keycode  97  =  SControl
+keycode  100 =  SAltGr

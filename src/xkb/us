@@ -940,8 +940,9 @@ xkb_symbols "colemak_dh_iso" {
 };
 
 // Xkb for the Grammak layout (US, ANSI keyboard, Z angel mod, Wide layout).
-// 2022-02-03 by iDes3rt
+// 2022-02-04 by iDes3rt
 
+partial alphanumeric_keys modifier_keys
 xkb_symbols "grammak" {
 
     name[Group1]= "English (Grammak)";
@@ -1002,11 +1003,15 @@ xkb_symbols "grammak" {
     key <LSGT> { [        minus,   underscore,          endash,           emdash ] };
     key <SPCE> { [        space,        space,           space,     nobreakspace ] };
 
+    key <LFSH> { [ ISO_Level2_Latch ] };
+    key <RTSH> { [ ISO_Level2_Latch ] };
+    modifier_map Shift { <LFSH>, <RTSH> };
+
     include "level3(ralt_switch)"
 };
 
 // Xkb for the Grammak layout (US, ISO keyboard, Z angel mod, Wide layout).
-// 2022-02-03 by iDes3rt
+// 2022-02-04 by iDes3rt
 
 xkb_symbols "grammak_iso" {
 
@@ -1019,8 +1024,6 @@ xkb_symbols "grammak_iso" {
     key <AD11> { [   apostrophe,    quotedbl,      otilde,      Otilde ] };
     key <AD12> { [        minus,  underscore,      endash,      emdash ] };
     key <BKSL> { [    semicolon,       colon,  odiaeresis,  Odiaeresis ] };
-
-    include "level3(ralt_switch)"
 };
 
 // I do NOT like dead-keys - the International keyboard as defined by Microsoft
