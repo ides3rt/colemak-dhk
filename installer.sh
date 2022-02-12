@@ -16,7 +16,7 @@ Err() {
 Basedir="${0%/*}"/src
 
 if [[ ! -d $Basedir ]]; then
-	Err 0 "Unable to find '$Basedir/src', use \`git clone\`..."
+	Err 0 "Unable to find '$Basedir', use \`git clone\`..."
 
 	if ! type -P git &>/dev/null; then
 		read -p 'git(1) not found, do you want to install it? [Y/n]: '
