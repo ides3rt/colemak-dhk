@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# It's a mess lol.
-
 Program="${0##*/}"
 
 Err() {
@@ -13,6 +11,8 @@ Err() {
 
 ((UID)) && Err 1 'root access required...'
 
+type -P gzip &>/dev/null || Err 1 'gzip(1) is required for console installation...'
+
 Basedir="${0%/*}"/src
 
 if [[ ! -d $Basedir ]]; then
@@ -22,18 +22,17 @@ if [[ ! -d $Basedir ]]; then
 		read -p 'git(1) not found, do you want to install it? [Y/n]: '
 
 		case "$REPLY" in
-
 			[Yy][Ee][Ss]|[Yy]|'')
 
 				if type -P pacman &>/dev/null; then
-					pacman -Sy git || Err 1 'Unable to install git(1)...'
+					pacman -Sy --noconfirm git || Err 1 'unable to install git(1)...'
 
 				elif type -P apt-get &>/dev/null; then
-					apt-get update
-					apt-get install git || Err 1 'Unable to install git(1)...'
+					apt-get update -y
+					apt-get install -y git || Err 1 'unable to install git(1)...'
 
 				else
-					Err 1 "Your packages manager not supported by '$Program'..."
+					Err 1 "your packages manager not supported by '$Program'..."
 
 				fi ;;
 
@@ -41,18 +40,15 @@ if [[ ! -d $Basedir ]]; then
 				exit 1 ;;
 
 			*)
-				Err 1 'Invaild reply...' ;;
-
+				Err 1 'invaild reply...' ;;
 		esac
 	fi
 
 	URL='https://github.com/ides3rt/grammak'
-	git clone "$URL" || Err 1 'Failed to use `git clone`...'
+	git clone "$URL" || Err 1 'failed to use `git clone`...'
 
 	Basedir="${URL##*/}"/src
 fi
-
-type -P gzip &>/dev/null || Err 1 'gzip(1) is required for console installation...'
 
 Xkbdir="$Basedir"/xkb
 Xkbdest=/usr/share/X11/xkb
@@ -60,25 +56,25 @@ Xkbdest=/usr/share/X11/xkb
 Console="$Basedir"/console
 Consdest=/usr/share/kbd/keymaps/i386/grammak
 
-for File in "$Xkbdir"/{us,evdev.xml} "$Console"/grammak{-iso.,.}map; {
-	[[ -f "$File" ]] || Err 1  "'$File' is missing, aborted..."
+for File in "$Xkbdir"/{us,evdev.xml} "$Console"/grammak{,-iso}.map; {
+	[[ -f $File ]] || Err 1  "'$File' is missing, aborted..."
 }
 
 if ! cp "$Xkbdir"/us "$Xkbdest"/symbols/us; then
-	Err 0 "Installation of 'xkb/us' failed..."
+	Err 0 "installation of 'xkb/us' failed..."
 	(( ErrCount++ ))
 fi
 
 if ! cp "$Xkbdir"/evdev.xml "$Xkbdest"/rules/evdev.xml; then
-	Err 0 "Installation of 'xkb/evdev.xml' failed..."
+	Err 0 "installation of 'xkb/evdev.xml' failed..."
 	(( ErrCount++ ))
 fi
 
-if	! {	mkdir -p "$Consdest" && \
-		gzip -k "$Console"/* && \
-		mv "$Console"/*.gz "$Consdest" ;}
+if ! { mkdir -p "$Consdest" && \
+	gzip -k "$Console"/* && \
+	mv "$Console"/*.gz "$Consdest" ;}
 then
-	Err 0 "Installation of '${Console##*/}' failed..."
+	Err 0 "installation of '${Console##*/}' failed..."
 	(( ErrCount++ ))
 fi
 
