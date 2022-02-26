@@ -940,7 +940,7 @@ xkb_symbols "colemak_dh_iso" {
 };
 
 // Xkb for the Grammak layout (US, ANSI keyboard, Z angel mod, Wide layout).
-// 2022-02-04 by iDes3rt
+// 2022-02-04 by iDes3rt.
 
 partial alphanumeric_keys modifier_keys
 xkb_symbols "grammak" {
@@ -1011,7 +1011,7 @@ xkb_symbols "grammak" {
 };
 
 // Xkb for the Grammak layout (US, ISO keyboard, Z angel mod, Wide layout).
-// 2022-02-04 by iDes3rt
+// 2022-02-04 by iDes3rt.
 
 xkb_symbols "grammak_iso" {
 
