@@ -7,36 +7,39 @@ Err() {
 	(( $1 > 0 )) && exit $1
 }
 
-(( $# > 0 )) && Err 1 "don't accept argument..."
+(( $# > 0 )) && Err 2 "needn't argument..."
 
-((UID)) && Err 1 'root access required...'
+((UID)) && Err 2 'required root privileges...'
 
-type -P gzip &>/dev/null || Err 1 'gzip(1) is required for console installation...'
+if ! type -P gzip &>/dev/null; then
+	Err 1 'denpendency, `gzip`, not found...'
+fi
 
 Basedir="${0%/*}"/src
 
 if [[ ! -d $Basedir ]]; then
-	Err 0 "Unable to find '$Basedir', use \`git clone\`..."
+	Err 0 "$Basedir: not found, use \`git clone\` instead..."
 
 	if ! type -P git &>/dev/null; then
-		read -p 'git(1) not found, do you want to install it? [Y/n]: '
+		Err 0 'optional dependency, `git`, not found...'
+		read -p 'Do you want to install it? [Y/n]: '
 
-		case "$REPLY" in
-			[Yy][Ee][Ss]|[Yy]|'')
+		case ${REPLY,,} in
+			yes|y|'')
 
 				if type -P pacman &>/dev/null; then
-					pacman -Sy --noconfirm git || Err 1 'unable to install git(1)...'
+					pacman -Sy --noconfirm git || Err 1 'failed to install git(1)...'
 
 				elif type -P apt-get &>/dev/null; then
 					apt-get update -y
-					apt-get install -y git || Err 1 'unable to install git(1)...'
+					apt-get install -y git || Err 1 'failed to install git(1)...'
 
 				else
-					Err 1 "your packages manager not supported by '$Program'..."
+					Err 1 "package manager not supported, yet..."
 
 				fi ;;
 
-			[Nn][Oo]|[Nn])
+			no|n)
 				exit 1 ;;
 
 			*)
@@ -44,8 +47,8 @@ if [[ ! -d $Basedir ]]; then
 		esac
 	fi
 
-	URL='https://github.com/ides3rt/grammak'
-	git clone "$URL" || Err 1 'failed to use `git clone`...'
+	URL=https://github.com/ides3rt/grammak
+	git clone -q "$URL" || Err 1 'failed to use `git clone`...'
 
 	Basedir="${URL##*/}"/src
 fi
@@ -57,25 +60,28 @@ Console="$Basedir"/console
 Consdest=/usr/share/kbd/keymaps/i386/grammak
 
 for File in "$Xkbdir"/{us,evdev.xml} "$Console"/grammak{,-iso}.map; {
-	[[ -f $File ]] || Err 1  "'$File' is missing, aborted..."
+	[[ -f $File ]] || Err 0 "$File: not found..."
+	(( ErrCount++ ))
 }
 
+(( ErrCount > 0 )) && Err 1 "$ErrCount file(s) not found, aborted..."
+
 if ! cp "$Xkbdir"/us "$Xkbdest"/symbols/us; then
-	Err 0 "installation of 'xkb/us' failed..."
+	Err 0 'xkb/us: installation failed...'
 	(( ErrCount++ ))
 fi
 
 if ! cp "$Xkbdir"/evdev.xml "$Xkbdest"/rules/evdev.xml; then
-	Err 0 "installation of 'xkb/evdev.xml' failed..."
+	Err 0 'xkb/evdev.xml: installation failed...'
 	(( ErrCount++ ))
 fi
 
 if ! { mkdir -p "$Consdest" && \
 	gzip -k "$Console"/* && \
-	mv "$Console"/*.gz "$Consdest" ;}
+	mv "$Console"/*.gz "$Consdest"; }
 then
-	Err 0 "installation of '${Console##*/}' failed..."
+	Err 0 "${Console##*/}: installation failed..."
 	(( ErrCount++ ))
 fi
 
-Err 0 "Installation was finished with ${ErrCount:-0} error(s)..."
+Err 0 "installation was finished with ${ErrCount:-0} error(s)..."
