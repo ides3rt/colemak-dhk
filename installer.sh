@@ -60,8 +60,10 @@ Console="$Basedir"/console
 Consdest=/usr/share/kbd/keymaps/i386/grammak
 
 for File in "$Xkbdir"/{us,evdev.xml} "$Console"/grammak{,-iso}.map; {
-	[[ -f $File ]] || Err 0 "$File: not found..."
-	(( ErrCount++ ))
+	if [[ ! -f $File ]]; then
+		Err 0 "$File: not found..."
+		(( ErrCount++ ))
+	fi
 }
 
 (( ErrCount > 0 )) && Err 1 "$ErrCount file(s) not found, aborted..."
