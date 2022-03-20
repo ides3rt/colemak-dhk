@@ -1,41 +1,41 @@
 #!/usr/bin/env bash
 
-Program="${0##*/}"
+progrm=${0##*/}
 
-Err() {
-	printf '%s\n' "$Program: $2" 1>&2
+panic() {
+	printf '%s\n' "$progrm: $2" 1>&2
 	(( $1 > 0 )) && exit $1
 }
 
-(( $# > 0 )) && Err 2 "needn't argument..."
+(( $# > 0 )) && panic 1 "needn't argument..."
 
-((UID)) && Err 2 'required root privileges...'
+((UID)) && panic 1 'required root privileges...'
 
 if ! type -P gzip &>/dev/null; then
-	Err 1 'denpendency, `gzip`, not found...'
+	panic 1 'dependency, `gzip`, not found...'
 fi
 
-Basedir="${0%/*}"/src
+base_dir=${0%/*}/src
 
-if [[ ! -d $Basedir ]]; then
-	Err 0 "$Basedir: not found, use \`git clone\` instead..."
+if [[ ! -d $base_dir ]]; then
+	panic 0 "$base_dir: not found, use \`git clone\` instead..."
 
 	if ! type -P git &>/dev/null; then
-		Err 0 'optional dependency, `git`, not found...'
+		panic 0 'optional dependency, `git`, not found...'
 		read -p 'Do you want to install it? [Y/n]: '
 
 		case ${REPLY,,} in
 			yes|y|'')
 
 				if type -P pacman &>/dev/null; then
-					pacman -Sy --noconfirm git || Err 1 'failed to install git(1)...'
+					pacman -Sy --noconfirm git || panic 1 'failed to install git(1)...'
 
 				elif type -P apt-get &>/dev/null; then
 					apt-get update -y
-					apt-get install -y git || Err 1 'failed to install git(1)...'
+					apt-get install -y git || panic 1 'failed to install git(1)...'
 
 				else
-					Err 1 "package manager not supported, yet..."
+					panic 1 "package manager not supported, yet..."
 
 				fi ;;
 
@@ -43,47 +43,47 @@ if [[ ! -d $Basedir ]]; then
 				exit 1 ;;
 
 			*)
-				Err 1 'invaild reply...' ;;
+				panic 1 'invaild reply...' ;;
 		esac
 	fi
 
-	URL=https://github.com/ides3rt/grammak
-	git clone -q "$URL" || Err 1 'failed to use `git clone`...'
+	url=https://github.com/ides3rt/grammak
+	git clone -q "$url" || panic 1 'failed to use `git clone`...'
 
-	Basedir="${URL##*/}"/src
+	base_dir=${url##*/}/src
 fi
 
-Xkbdir="$Basedir"/xkb
-Xkbdest=/usr/share/X11/xkb
+xkb_dir=$base_dir/xkb
+xkb_dest=/usr/share/X11/xkb
 
-Console="$Basedir"/console
-Consdest=/usr/share/kbd/keymaps/i386/grammak
+con_dir=$base_dir/console
+con_dest=/usr/share/kbd/keymaps/i386/grammak
 
-for File in "$Xkbdir"/{us,evdev.xml} "$Console"/grammak{,-iso}.map; {
-	if [[ ! -f $File ]]; then
-		Err 0 "$File: not found..."
-		(( ErrCount++ ))
+for file in "$xkb_dir"/{us,evdev.xml} "$con_dir"/grammak{,-iso}.map; {
+	if [[ ! -f $file ]]; then
+		panic 0 "$file: not found..."
+		(( gone_nr++ ))
 	fi
 }
 
-(( ErrCount > 0 )) && Err 1 "$ErrCount file(s) not found, aborted..."
+(( gone_nr > 0 )) && panic 1 "$gone_nr file(s) not found, aborted..."
 
-if ! cp "$Xkbdir"/us "$Xkbdest"/symbols/us; then
-	Err 0 'xkb/us: installation failed...'
-	(( ErrCount++ ))
+if ! cp -- "$xkb_dir"/us "$xkb_dest"/symbols/us; then
+	panic 0 'xkb/us: installation failed...'
+	(( not_instll++ ))
 fi
 
-if ! cp "$Xkbdir"/evdev.xml "$Xkbdest"/rules/evdev.xml; then
-	Err 0 'xkb/evdev.xml: installation failed...'
-	(( ErrCount++ ))
+if ! cp -- "$xkb_dir"/evdev.xml "$xkb_dest"/rules/evdev.xml; then
+	panic 0 'xkb/evdev.xml: installation failed...'
+	(( not_instll++ ))
 fi
 
-if ! { mkdir -p "$Consdest" && \
-	gzip -k "$Console"/* && \
-	mv "$Console"/*.gz "$Consdest"; }
+if ! { mkdir -p -- "$con_dest" && \
+	gzip -k -- "$con_dir"/* && \
+	mv -- "$con_dir"/*.gz "$con_dest"; }
 then
-	Err 0 "${Console##*/}: installation failed..."
-	(( ErrCount++ ))
+	panic 0 "${con_dir##*/}: installation failed..."
+	(( not_instll++ ))
 fi
 
-Err 0 "installation was finished with ${ErrCount:-0} error(s)..."
+panic 0 "installation was finished with ${not_instll:-0} error(s)..."
